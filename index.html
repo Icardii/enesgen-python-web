@@ -1,0 +1,32 @@
+  }
+  loadPyodideAndPackages();
+
+  function loadExample() {
+    const sel = document.getElementById("examples");
+    const val = sel.value;
+    if(val == "0") {
+      alert("Lütfen bir örnek seçin.");
+      return;
+    }
+    document.getElementById("code").value = pythonExamples[val];
+    document.getElementById("output").textContent = "Kod yüklendi, 'Çalıştır' tuşuna basın.";
+  }
+  async function runPython() {
+    if (!pyodideReady) {
+      alert("Python ortamı henüz hazır değil, lütfen bekleyin.");
+      return;
+    }
+    const code = document.getElementById("code").value;
+    try {
+      let output = await pyodide.runPythonAsync(code);
+      if (output === undefined) output = "Kod çalıştırıldı.";
+      document.getElementById("output").textContent = output;
+    } catch (err) {
+      document.getElementById("output").textContent = "Hata:\n" + err;
+    }
+  }
+
+  function toggleDarkMode() {
+    document.body.classList.toggle("dark");
+  }
+</script>
